@@ -16,6 +16,12 @@ RUN apk update \
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+RUN pip install djongo
+RUN pip install googletrans
+#RUN pip install djongo
+#RUN pip install djongo
+#RUN pip install djongo
+
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
