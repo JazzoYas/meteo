@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from googletrans import Translator
 from datetime import datetime
 from scipy import stats
 from io import BytesIO
@@ -30,13 +29,11 @@ def index(request):
 def api_weather():
 
     # api weatherstack
-    url_weather = "http://api.openweathermap.org/data/2.5/weather?q=brest,fr&APPID=beb97c1ce62559bba4e81e28de8be095"
-    r_weather = requests.get(url_weather)
+    r_weather = requests.get("http://api.openweathermap.org/data/2.5/weather?q=brest,fr&APPID=beb97c1ce62559bba4e81e28de8be095&lang=fr")
     dt = r_weather.json()
 
     # api weatherstack for prec
-    url_weather1 = "http://api.weatherstack.com/current?access_key=8efd0f7572925c9df338ee6d234b15b7&query=brest,france"
-    r_weather1 = requests.get(url_weather1)
+    r_weather1 = requests.get("http://api.weatherstack.com/current?access_key=8efd0f7572925c9df338ee6d234b15b7&query=brest,france")
     dt1 = r_weather1.json()
 
     # icon
@@ -49,14 +46,10 @@ def api_weather():
     # humidite
     humidite = dt['main']['humidity']
 
-    # description
-    translator = Translator()
-    result = translator.translate(
-        dt['weather'][0]['description'], src='en', dest='fr')
-    description = result.text
+    description = dt["weather"][0]["description"]
 
     # precipitation
-    precipitation = dt1['current']['precip']
+    precipitation = dt1["current"]["precip"]
 
     data = {
         "icon": icon,
@@ -99,7 +92,7 @@ def api_datetime():
 # mongodb_connexion ------------------------------------------------------------
 def mongodb_connexion():
     # connexion mongodb
-    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["meteo"]
     mycol1 = mydb["temperature"]
     mycol2 = mydb["precipitation"]
@@ -265,7 +258,8 @@ def get_mounth(type=1, regression=False, mois=0, annee_start=1980, annee_end=api
 
 
 # getchart ------------------------------------------------------------
-def getchart(request):
+def getchart(request):    
+    
     type = int(request.GET.get('type', None))
     reg = int(request.GET.get('reg', None))
     regression = False
