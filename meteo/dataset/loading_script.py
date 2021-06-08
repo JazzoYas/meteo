@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import pymongo
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+myclient = pymongo.MongoClient("mongodb://mongo:27017/")
 mydb = myclient["meteo"]
 
 start = '1850'
@@ -17,6 +17,7 @@ responsePre = requests.get(urlPre)
 
 if responsePre.ok:
     soup = BeautifulSoup(responsePre.text, 'lxml')
+    #tds tabl qui continet les cases de la table
     tds = soup.find('table', {'class': 'table1'}).findAll('td')
 
     i = 1

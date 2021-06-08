@@ -77,7 +77,11 @@ WSGI_APPLICATION = 'meteo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'mydatabase'
+        'NAME': 'meteo',
+        'CLIENT': {
+            #'host': 'localhost',
+           'host': 'mongo',
+        }
     }
 }
 
